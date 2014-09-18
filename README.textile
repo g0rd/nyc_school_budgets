@@ -1,0 +1,12 @@
+Made this at the #jdcny event at Columbia.
+
+Scrapes school budgets from the NYC Department of Ed site, see for example http://schools.nyc.gov/AboutUs/funding/schoolbudgets/GalaxyAllocationFY2010.htm?BSSS_INPUT=M411
+
+Tricky thing is the markup changed slightly each year... and getting a list of school IDs.
+
+Thanks to Julian Todd for making category part of the row key, this gives a more useful table with tons of rows and not so many columns.
+
+Needs more work to categorize the categories into "major" categories (there are thousands of categories)
+
+Address: "Tweed Courthouse, 52 Chambers Street, New York, NY 10007, USA":http://schools.nyc.gov/ContactDOE/
+
