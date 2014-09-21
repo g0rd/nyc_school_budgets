@@ -65,7 +65,7 @@ def scrape(schoolcode):
     print school_name[0].text_content().encode("utf-8").strip()
     ell_budget = tree.cssselect('span#doecontrol_bottomcentercontainer_School_Budget_Overview_lblELLSubTotal_C04')
     print ell_budget[0].text_content().encode("utf-8").strip()
-    school = school_name[0].text_content().encode("utf-8").strip()
+    school = school_name[0].text_content().encode("utf-8").split()[1].strip()
     budget = ell_budget[0].text_content().encode("utf-8").strip()
     output = {"school_id": schoolcode, "school_name":school, "budget": budget }
 
