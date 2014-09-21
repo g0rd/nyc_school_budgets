@@ -82,8 +82,8 @@ def scrape(schoolcode):
        # catmap[category] = cells[1].text.strip()
 
     ldata = [ ]
-   data["dollars"] = ell_budget;
-    for category, val in catmap.items():
+    data["dollars"] = ell_budget;
+    #for category, val in catmap.items():
         #data = { "category":category, "val":val }
      #   eif re.match("[\d\$.]+$", val[0]):
        #     data["dollars"] = int(re.sub("[\$,]", "", val))
@@ -99,8 +99,8 @@ def scrape(schoolcode):
          #       data['majorcategory'] = majorcat
          #       break
 
-        data.update(output)
-        ldata.append(data)
+    data.update(output)
+    ldata.append(data)
 
     #pprint(ldata)
     scraperwiki.sqlite.save(unique_keys=['school_id'], data=ldata, table_name=TABLE)
