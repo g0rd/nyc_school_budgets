@@ -84,7 +84,7 @@ def scrape(schoolcode):
      #   #category not in catmap, (category, catmap)
        # catmap[category] = cells[1].text.strip()
 
-    ldata = [ ]
+    #ldata = [ ]
     #data['dollars'] = ell_budget;
     #for category, val in catmap.items():
         #data = { "category":category, "val":val }
@@ -103,10 +103,10 @@ def scrape(schoolcode):
          #       break
 
     #data.update(output)
-    ldata.append(output)
+    #ldata.append(output)
 
     #pprint(ldata)
-    scraperwiki.sqlite.save(unique_keys=['school_id'], data=ldata, table_name=TABLE)
+    scraperwiki.sqlite.save(unique_keys=['school_id'], data=output, table_name=TABLE)
 
 
 def get_school_ids():
