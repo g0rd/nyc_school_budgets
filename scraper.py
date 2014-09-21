@@ -148,7 +148,8 @@ def main(reset=False, first_code="X282"):
             #else:
                 #continue
     try:
-        print "doing school", i + 1, "of", len(codes), "with id", first_code
+        #print "doing school", i + 1, "of", len(codes), "with id", first_code
+        print "doing school", 1, "of", len(codes), "with id", first_code
         scrape(first_code)
     except Exception as e:
         print "Unhandled exception on school %s" % (first_code)
