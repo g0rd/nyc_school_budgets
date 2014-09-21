@@ -67,9 +67,7 @@ def scrape(schoolcode):
     school_str = school_name[0].text_content().encode("utf-8").split()
     del school_str[0]
     
-    pprint(school_str)
-    
-    school= ""
+    school= str.join(school_str)
     
     budget = ell_budget[0].text_content().encode("utf-8").strip()
     output = {"school_id": schoolcode, "school_name":school, "budget": budget }
