@@ -32,17 +32,13 @@ category_map = (
 )
 
 
-def scrape(schoolcode, year=today.year):
+def scrape(schoolcode):
 
     # New system with slightly different markup debuted 2010,
     # and markup changed again in 2011.
-    if int(year) >= 2010:
-        base_uri = "http://schools.nyc.gov/AboutUs/funding/schoolbudgets/GalaxyAllocationFY%d.htm" % year
-        params = {'BSSS_INPUT': schoolcode}
-    else:
-        base_uri = "https://www.nycenet.edu/offices/d_chanc_oper/budget/dbor/galaxy/galaxyba/schallo4.asp"
-        params = {'DDBSSS_INPUT': schoolcode, 'YEAR_SELECT': str(year)}
-
+    
+    base_uri = "http://schools.nyc.gov/AboutUs/funding/schoolbudgets/FY14FairStudentFundingBudget.htm
+      
     params = urllib.urlencode(params)
     uri = base_uri + '?' + params
     #print "Fetching %s" % uri
@@ -64,86 +60,50 @@ def scrape(schoolcode, year=today.year):
         print "Not found", uri
         return
 
-    if year >= 2011:
-        budget_rows = tree.cssselect('table.vgalaxy tr')
-        title = tree.cssselect('div.school a')[0].text
-        school_name = title.strip()
-
-    elif year == 2010:
-        table = tree.cssselect('div#middlecenter table')[1]
-        budget_rows = table.cssselect('tr')
-        other_rows = [row for row in budget_rows
-                      if len(row.cssselect('td')) < 2]
-        budget_rows = [row for row in budget_rows
-                       if len(row.cssselect('td')) == 2]
-        # Don't see an easier way to find school name in 2010...
-        for row in other_rows:
-            links = row.cssselect('td a')
-            if links and links[0].attrib.get('title') == 'School Page Reports':
-                school_name = links[0].text.strip()
-
-    elif year < 2010:
-        budget_rows = tree.cssselect('tr.row3')
-        if year == 2006:
-            # Yes, they moved stuff around each year. Argh.
-            school_info_table = tree.cssselect('table tr td table')[3]
-        elif year == 2009:
-            school_info_table = tree.cssselect('table tr td table')[2]
-        else:
-            school_info_table = tree.cssselect('table tr td table')[1]
-
-        for row in school_info_table.cssselect('tr'):
-            cells = row.cssselect('td b')
-            if len(cells) < 2:
-                break
-            # This includes school name and a bunch of other stuff
-            # we don't have after 2009, eg district code.
-            # TODO: Skip those?
-            key = normalize_key(cells[0].text)
-            if key == 'school_name':
-                school_name = cells[1].text.strip()
-                break
-
+    budget_rows = tree.cssselect('table.budget-ra budget-ra-top-bottom tr')
+    school_name = tree.cssselect('div.schoolname a')
+    ell_budget = tree.cssselect('span doecontrol_bottomcentercontainer_School_Budget_Overview_lblELLSubTotal_C04')
     school_name = school_name.split('-', 1)[-1].strip()
-    output = { 'fiscal_year':int(year), 'school_id': schoolcode, 'school_name':school_name }
+    output = {'school_id': schoolcode, 'school_name':school_name }
 
     # sometimes there's a header, sometimes not
-    if re.search('Data Source GALAXY|Allocation CategoryFY[\s\xa0]*\d\d\d\d', budget_rows[0].text_content()):
-        del budget_rows[0]
-    catmap = { }
-    for table_row in budget_rows: 
-        cells = table_row.cssselect('td')
-        if len(cells) != 2:
-            continue
-        if not cells[0].text or not cells[1].text:
-            continue
-
-        category = cells[0].text.strip()
-        #category not in catmap, (category, catmap)
-        catmap[category] = cells[1].text.strip()
+   # if re.search('Data Source GALAXY|Allocation CategoryFY[\s\xa0]*\d\d\d\d', budget_rows[0].text_content()):
+     ##   del budget_rows[0]
+    #catmap = { }
+   # for table_row in budget_rows: 
+    #    cells = table_row.cssselect('td')
+    #    if len(cells) != 2:
+    #        continue
+    #    if not cells[0].text or not cells[1].text:
+       #     continue
+#
+      #  category = cells[0].text.strip()
+     #   #category not in catmap, (category, catmap)
+       # catmap[category] = cells[1].text.strip()
 
     ldata = [ ]
+   data["dollars"] = ell_budget;
     for category, val in catmap.items():
-        data = { "category":category, "val":val }
-        if re.match("[\d\$.]+$", val[0]):
-            data["dollars"] = int(re.sub("[\$,]", "", val))
-        else:
-            assert val == "TBD", data
+        #data = { "category":category, "val":val }
+     #   eif re.match("[\d\$.]+$", val[0]):
+       #     data["dollars"] = int(re.sub("[\$,]", "", val))
+        #else:
+        #    assert val == "TBD", data
 
-        data['majorcategory'] = 'unknown'
-        for majorcat, regex in category_map:
-            matched = regex.search(category)
-            if matched:
-                if len(matched.groups()):
-                     majorcat = matched.group(1).lower()
-                data['majorcategory'] = majorcat
-                break
+        #data['majorcategory'] = 'unknown'
+       # for majorcat, regex in category_map:
+       #     matched = regex.search(category)
+         #   if matched:
+          #      if len(matched.groups()):
+         #            majorcat = matched.group(1).lower()
+         #       data['majorcategory'] = majorcat
+         #       break
 
         data.update(output)
         ldata.append(data)
 
     #pprint(ldata)
-    scraperwiki.sqlite.save(unique_keys=['school_id', 'fiscal_year', 'category'], data=ldata, table_name=TABLE)
+    scraperwiki.sqlite.save(unique_keys=['school_id'], data=ldata, table_name=TABLE)
 
 
 def get_school_ids():
@@ -171,19 +131,12 @@ def get_school_ids():
             yield cell.value[2:]
 
 
-def main(reset=False, years=None, first_code=None):
+def main(reset=False, first_code=None):
     import time
     start = time.time()
     codes = list(get_school_ids())
     print "Got %d school ids..." % len(codes)
-    if reset: 
-        scraperwiki.sqlite.execute("drop table if exists " + TABLE)
-        if not years:
-            years = range(today.year, 2005, -1)
-    else:
-        if not years:
-            years = [today.year]
-    print "Doing years %s" % years
+   
     for i, schoolcode in enumerate(codes):
         if first_code is not None:
             if schoolcode == first_code:
@@ -191,14 +144,13 @@ def main(reset=False, years=None, first_code=None):
                 first_code = None
             else:
                 continue
-        for year in years:
-            try:
-                print "doing school", i + 1, "of", len(codes), "with id", schoolcode, "year", year
-                scrape(schoolcode, year)
-            except Exception as e:
-                print "Unhandled exception on school %s year %s" % (schoolcode, year)
-                import traceback
-                print traceback.format_exc()
+        try:
+            print "doing school", i + 1, "of", len(codes), "with id", schoolcode
+            scrape(schoolcode)
+        except Exception as e:
+            print "Unhandled exception on school %s year %s" % (schoolcode)
+            import traceback
+            print traceback.format_exc()
     print "Ran in %s seconds" % (time.time() - start)
 
 
