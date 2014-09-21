@@ -38,7 +38,7 @@ def scrape(schoolcode):
     # and markup changed again in 2011.
     
     base_uri = "http://schools.nyc.gov/AboutUs/funding/schoolbudgets/FY14FairStudentFundingBudget.htm"
-      
+    params = {'schoolcode': schoolcode}
     params = urllib.urlencode(params)
     uri = base_uri + '?' + params
     #print "Fetching %s" % uri
