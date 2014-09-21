@@ -62,12 +62,13 @@ def scrape(schoolcode):
 
     #budget_rows = tree.cssselect('table.budget-ra budget-ra-top-bottom tr')
     school_name = tree.cssselect('div.schoolname a')
-    print school_name[0].text_content().encode("utf-8").strip()
     ell_budget = tree.cssselect('span#doecontrol_bottomcentercontainer_School_Budget_Overview_lblELLSubTotal_C04')
-    print ell_budget[0].text_content().encode("utf-8").strip()
+    
     school_str = school_name[0].text_content().encode("utf-8").split().pop(0)
     pprint(school_str)
-    school= str.join(school_str)
+    
+    school= ""
+    
     budget = ell_budget[0].text_content().encode("utf-8").strip()
     output = {"school_id": schoolcode, "school_name":school, "budget": budget }
 
