@@ -62,9 +62,9 @@ def scrape(schoolcode):
 
     #budget_rows = tree.cssselect('table.budget-ra budget-ra-top-bottom tr')
     school_name = tree.cssselect('div.schoolname a')
-    print school_name[0].text_content().encode("utf-8")
+    print school_name[0].text_content().encode("utf-8").strip()
     ell_budget = tree.cssselect('span#doecontrol_bottomcentercontainer_School_Budget_Overview_lblELLSubTotal_C04')
-    print ell_budget[0].text_content().encode("utf-8")
+    print ell_budget[0].text_content().encode("utf-8").strip()
     #school_name = school_name
     #print school_name
     output = {'school_id': schoolcode, 'school_name':school_name }
@@ -85,7 +85,7 @@ def scrape(schoolcode):
        # catmap[category] = cells[1].text.strip()
 
     ldata = [ ]
-    data["dollars"] = ell_budget;
+    data['dollars'] = ell_budget;
     #for category, val in catmap.items():
         #data = { "category":category, "val":val }
      #   eif re.match("[\d\$.]+$", val[0]):
