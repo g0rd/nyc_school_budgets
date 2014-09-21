@@ -106,7 +106,7 @@ def scrape(schoolcode):
     #ldata.append(output)
 
     #pprint(ldata)
-    scraperwiki.sqlite.save(unique_keys=["school_id", "school_name"], data=output, table_name=TABLE, unique = False)
+    scraperwiki.sqlite.save(unique_keys=["school_id", "school_name"], data={"school_id": schoolcode, "school_name":school, "budget": budget }, table_name=TABLE)
 
 
 def get_school_ids():
