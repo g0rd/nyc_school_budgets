@@ -147,13 +147,13 @@ def main(reset=False, first_code="X282"):
                 #first_code = None
             #else:
                 #continue
-        try:
-            print "doing school", i + 1, "of", len(codes), "with id", first_code
-            scrape(first_code)
-        except Exception as e:
-            print "Unhandled exception on school %s" % (first_code)
-            import traceback
-            print traceback.format_exc()
+    try:
+        print "doing school", i + 1, "of", len(codes), "with id", first_code
+        scrape(first_code)
+    except Exception as e:
+        print "Unhandled exception on school %s" % (first_code)
+        import traceback
+        print traceback.format_exc()
     print "Ran in %s seconds" % (time.time() - start)
 
 
