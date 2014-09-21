@@ -148,7 +148,7 @@ def main(reset=False, first_code=None):
             print "doing school", i + 1, "of", len(codes), "with id", schoolcode
             scrape(schoolcode)
         except Exception as e:
-            print "Unhandled exception on school %s year %s" % (schoolcode)
+            print "Unhandled exception on school %s" % (schoolcode)
             import traceback
             print traceback.format_exc()
     print "Ran in %s seconds" % (time.time() - start)
