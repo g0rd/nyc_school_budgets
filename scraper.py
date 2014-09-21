@@ -67,7 +67,7 @@ def scrape(schoolcode):
     print ell_budget[0].text_content().encode("utf-8").strip()
     school = school_name[0].text_content().encode("utf-8").strip()
     budget = ell_budget[0].text_content().encode("utf-8").strip()
-    output = {'school_id': schoolcode, 'school_name':school, 'budget': budget }
+    output = {"school_id": schoolcode, "school_name":school, "budget": budget }
 
     # sometimes there's a header, sometimes not
    # if re.search('Data Source GALAXY|Allocation CategoryFY[\s\xa0]*\d\d\d\d', budget_rows[0].text_content()):
@@ -106,7 +106,7 @@ def scrape(schoolcode):
     #ldata.append(output)
 
     #pprint(ldata)
-    scraperwiki.sqlite.save(unique_keys=['school_id'], data=output, table_name=TABLE)
+    scraperwiki.sqlite.save(unique_keys=["school_id"], data=output, table_name=TABLE)
 
 
 def get_school_ids():
