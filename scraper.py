@@ -65,9 +65,9 @@ def scrape(schoolcode):
     print school_name[0].text_content().encode("utf-8").strip()
     ell_budget = tree.cssselect('span#doecontrol_bottomcentercontainer_School_Budget_Overview_lblELLSubTotal_C04')
     print ell_budget[0].text_content().encode("utf-8").strip()
-    #school_name = school_name
-    #print school_name
-    output = {'school_id': schoolcode, 'school_name':school_name }
+    school = school_name[0].text_content().encode("utf-8").strip()
+    budget = ell_budget[0].text_content().encode("utf-8").strip()
+    output = {'school_id': schoolcode, 'school_name':school, 'budget': budget }
 
     # sometimes there's a header, sometimes not
    # if re.search('Data Source GALAXY|Allocation CategoryFY[\s\xa0]*\d\d\d\d', budget_rows[0].text_content()):
@@ -85,7 +85,7 @@ def scrape(schoolcode):
        # catmap[category] = cells[1].text.strip()
 
     ldata = [ ]
-    data['dollars'] = ell_budget;
+    #data['dollars'] = ell_budget;
     #for category, val in catmap.items():
         #data = { "category":category, "val":val }
      #   eif re.match("[\d\$.]+$", val[0]):
@@ -102,8 +102,8 @@ def scrape(schoolcode):
          #       data['majorcategory'] = majorcat
          #       break
 
-    data.update(output)
-    ldata.append(data)
+    #data.update(output)
+    ldata.append(output)
 
     #pprint(ldata)
     scraperwiki.sqlite.save(unique_keys=['school_id'], data=ldata, table_name=TABLE)
