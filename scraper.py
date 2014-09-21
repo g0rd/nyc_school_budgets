@@ -60,10 +60,13 @@ def scrape(schoolcode):
         print "Not found", uri
         return
 
-    budget_rows = tree.cssselect('table.budget-ra budget-ra-top-bottom tr')
+    #budget_rows = tree.cssselect('table.budget-ra budget-ra-top-bottom tr')
     school_name = tree.cssselect('div.schoolname a')
+    print school_name
     ell_budget = tree.cssselect('span doecontrol_bottomcentercontainer_School_Budget_Overview_lblELLSubTotal_C04')
+    print ell_budget
     school_name = school_name.split('-', 1)[-1].strip()
+    print school_name
     output = {'school_id': schoolcode, 'school_name':school_name }
 
     # sometimes there's a header, sometimes not
@@ -131,24 +134,24 @@ def get_school_ids():
             yield cell.value[2:]
 
 
-def main(reset=False, first_code=None):
+def main(reset=False, first_code="X282"):
     import time
     start = time.time()
     codes = list(get_school_ids())
-    print "Got %d school ids..." % len(codes)
+    #print "Got %d school ids..." % len(codes)
    
-    for i, schoolcode in enumerate(codes):
-        if first_code is not None:
-            if schoolcode == first_code:
-                print "Starting with", schoolcode
-                first_code = None
-            else:
-                continue
+    #for i, schoolcode in enumerate(codes):
+        #if first_code is not None:
+            #if schoolcode == first_code:
+                #print "Starting with", schoolcode
+                #first_code = None
+            #else:
+                #continue
         try:
-            print "doing school", i + 1, "of", len(codes), "with id", schoolcode
-            scrape(schoolcode)
+            print "doing school", i + 1, "of", len(codes), "with id", first_code
+            scrape(first_code)
         except Exception as e:
-            print "Unhandled exception on school %s" % (schoolcode)
+            print "Unhandled exception on school %s" % (first_code)
             import traceback
             print traceback.format_exc()
     print "Ran in %s seconds" % (time.time() - start)
