@@ -6,6 +6,7 @@ from pprint import pprint
 import urllib
 import re
 import datetime
+import csv
 
 
 TABLE = 'linebudgets'
@@ -107,8 +108,8 @@ def scrape(schoolcode):
 
     #data.update(output)
     #ldata.append(output)
-
-    pprint(output)
+    print school_id+","+school_name+","+budget
+    
     #scraperwiki.sqlite.save(unique_keys=["school_id", "school_name"], data={"school_id": schoolcode, "school_name":school, "budget": budget }, table_name=TABLE)
 
 
@@ -137,28 +138,28 @@ def get_school_ids():
             yield cell.value[2:]
 
 
-def main(reset=False, first_code="X334"):
+def main(reset=False, first_code=None):
     import time
     start = time.time()
     codes = list(get_school_ids())
-    #print "Got %d school ids..." % len(codes)
+    print "Got %d school ids..." % len(codes)
    
-    #for i, schoolcode in enumerate(codes):
-        #if first_code is not None:
-            #if schoolcode == first_code:
-                #print "Starting with", schoolcode
-                #first_code = None
-            #else:
-                #continue
-    try:
-        #print "doing school", i + 1, "of", len(codes), "with id", first_code
-        print "doing school", 1, "of", len(codes), "with id", first_code
-        scrape(first_code)
-    except Exception as e:
-        print "Unhandled exception on school %s" % (first_code)
-        import traceback
-        print traceback.format_exc()
-    print "Ran in %s seconds" % (time.time() - start)
+    for i, schoolcode in enumerate(codes):
+        if first_code is not None:
+            if schoolcode == first_code:
+                print "Starting with", schoolcode
+                first_code = None
+            else:
+                continue
+        try:
+            #print "doing school", i + 1, "of", len(codes), "with id", first_code
+            #print "doing school", 1, "of", len(codes), "with id", first_code
+            scrape(first_code)
+        except Exception as e:
+            print "Unhandled exception on school %s" % (first_code)
+            import traceback
+            print traceback.format_exc()
+        print "Ran in %s seconds" % (time.time() - start)
 
 
 
