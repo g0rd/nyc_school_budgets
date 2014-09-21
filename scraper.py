@@ -62,9 +62,9 @@ def scrape(schoolcode):
 
     #budget_rows = tree.cssselect('table.budget-ra budget-ra-top-bottom tr')
     school_name = tree.cssselect('div.schoolname a')
-    print school_name[0].text
+    print school_name[0].encode('utf-8').text
     ell_budget = tree.cssselect('span#doecontrol_bottomcentercontainer_School_Budget_Overview_lblELLSubTotal_C04')
-    print ell_budget[0].text
+    print ell_budget[0].encode('utf-8').text
     #school_name = school_name
     #print school_name
     output = {'school_id': schoolcode, 'school_name':school_name }
@@ -134,7 +134,7 @@ def get_school_ids():
             yield cell.value[2:]
 
 
-def main(reset=False, first_code="X282"):
+def main(reset=False, first_code="X334"):
     import time
     start = time.time()
     codes = list(get_school_ids())
