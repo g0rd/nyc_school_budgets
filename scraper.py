@@ -37,7 +37,7 @@ def scrape(schoolcode):
     # New system with slightly different markup debuted 2010,
     # and markup changed again in 2011.
     
-    base_uri = "http://schools.nyc.gov/AboutUs/funding/schoolbudgets/FY14FairStudentFundingBudget.htm
+    base_uri = "http://schools.nyc.gov/AboutUs/funding/schoolbudgets/FY14FairStudentFundingBudget.htm"
       
     params = urllib.urlencode(params)
     uri = base_uri + '?' + params
