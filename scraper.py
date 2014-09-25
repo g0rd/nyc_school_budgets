@@ -64,6 +64,7 @@ def scrape(schoolcode):
     #budget_rows = tree.cssselect('table.budget-ra budget-ra-top-bottom tr')
     school_name = tree.cssselect('div.schoolname a')
     ell_budget = tree.cssselect('span#doecontrol_bottomcentercontainer_School_Budget_Overview_lblELLSubTotal_C04')
+    total_budget = tree.cssselect('span#doecontrol_bottomcentercontainer_School_Budget_Overview_lblL12_R20')
     
     school_str = school_name[0].text_content().encode("utf-8").split()
     del school_str[0]
@@ -71,7 +72,9 @@ def scrape(schoolcode):
     school= ' '.join(school_str)
     
     budget = ell_budget[0].text_content().encode("utf-8").strip()
-    output = {"school_id": schoolcode, "school_name":school, "budget": budget }
+    
+    totalbudget = ell_budget[0].text_content().encode("utf-8").strip()
+    output = {"school_id": schoolcode, "school_name":school, "budget": budget, "total_budget":totalbudget }
 
     # sometimes there's a header, sometimes not
    # if re.search('Data Source GALAXY|Allocation CategoryFY[\s\xa0]*\d\d\d\d', budget_rows[0].text_content()):
