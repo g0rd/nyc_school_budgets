@@ -145,7 +145,7 @@ def get_school_ids():
             yield cell.value[2:]
 
 
-def main(reset=False, first_code='M015'):
+def main(reset=False, first_code='K637'):
     import time
     start = time.time()
     codes = list(get_school_ids())
