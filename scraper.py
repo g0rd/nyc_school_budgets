@@ -111,7 +111,7 @@ def scrape(schoolcode):
 
     #data.update(output)
     #ldata.append(output)
-    print school_id+","+school_name+","+budget
+    print school_id+","+school_name+","+budget+","+totalbudget
     
     #scraperwiki.sqlite.save(unique_keys=["school_id", "school_name"], data={"school_id": schoolcode, "school_name":school, "budget": budget }, table_name=TABLE)
 
